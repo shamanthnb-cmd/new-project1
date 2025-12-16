@@ -4,7 +4,7 @@ pipeline {
     agent any
 
     environment {
-        IMAGE_NAME = "demo-app"
+        IMAGE_NAME = "app1"
         IMAGE_TAG  = "v1"
     }
 
