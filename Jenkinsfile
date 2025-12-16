@@ -1,38 +1,36 @@
+@Library('jenkins-lib') _
+
 pipeline {
     agent any
 
-    stages {
-        stage('Checkout') {
-            steps {
-                echo 'Code checked out from SCM'
-            }
-        }
+    environment {
+        IMAGE_NAME = "demo-app"
+        IMAGE_TAG  = "v1"
+    }
 
+    stages {
         stage('Build') {
             steps {
-                bat 'mvn clean package -DskipTests'
+                mavenBuild()
             }
         }
 
         stage('Test') {
             steps {
-                bat 'mvn test'
+                mavenTest()
             }
         }
 
         stage('Docker Build') {
             steps {
-                bat 'docker build -t demo-app:1.0 .'
+                dockerBuild(IMAGE_NAME, IMAGE_TAG)
             }
         }
     }
 
     post {
         success {
-            echo 'Build and Docker image created successfully'
-        }
-        failure {
-            echo 'Build failed'
+            echo 'Pipeline completed successfully using Shared Library'
         }
     }
 }
